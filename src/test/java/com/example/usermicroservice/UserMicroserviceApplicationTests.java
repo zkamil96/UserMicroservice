@@ -1,55 +1,75 @@
 package com.example.usermicroservice;
 
-import com.example.usermicroservice.Model.Items;
-import com.example.usermicroservice.Model.Users;
-import com.example.usermicroservice.Respository.ItemsRepository;
-import com.example.usermicroservice.Respository.UsersRepository;
 import com.example.usermicroservice.Service.ItemsService;
 import com.example.usermicroservice.Service.UsersService;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.util.AssertionErrors;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
+@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
 @SpringBootTest
 class UserMicroserviceApplicationTests {
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    WebApplicationContext webApplicationContext;
 
     @MockBean
-    private UsersRepository usersRepository;
-    @MockBean
-    private ItemsRepository itemsRepository;
-    @Autowired
     private UsersService usersService;
-    @Autowired
+    @MockBean
     private ItemsService itemsService;
 
-    Users user = new Users(1L, "login123456", "password12345", new ArrayList<Items>());
-    Items item = new Items(1L, 1L, "first");
+    @Test
+    public void loginUserTest() throws Exception {
+        String body = "{\"login\":\"login12345\",\"password\":\"password12345\"}";
 
-/*    public void addUserTest(){
-        when(usersRepository.save(user)).thenReturn(user);
-        assertEquals(user, usersService.registerUser(user));
-
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/login")
+                        .content(body)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
-    public void addItemTest(){
-        when(itemsRepository.save(item)).thenReturn(item);
-        assertEquals(item, itemsService.addItem(item));
-    }*/
+    @Test
+    public void registerUserTest() throws Exception {
+        String body = "{\"login\":\"login12345\",\"password\":\"password12345\"}";
 
+         mockMvc.perform(MockMvcRequestBuilders
+                .post("/register")
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
+    @Test
+    @WithMockUser(username = "login12345", password = "password12345")
+    public void addItemTest() throws Exception {
+        String body = "{\"name\":\"first\"}";
 
+        mockMvc.perform(MockMvcRequestBuilders.post("/items")
+                        .content(body)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
+    @Test
+    @WithMockUser(username = "login12345", password = "password12345")
+    public void getItemsTest() throws Exception {
 
-
-
-
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/items"))
+                .andExpect(status().isOk());
+    }
 }

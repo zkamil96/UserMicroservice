@@ -1,0 +1,101 @@
+#%RAML 1.0
+
+title: UserMicroservice
+baseUri: http://localhost:8080
+version: v1
+securitySchemes:
+  oauth_2_0:
+    description: |
+      This API supports OAuth 2.0 for authenticating all API requests.
+    type: OAuth 2.0
+    describedBy:
+      headers:
+        Authorization:
+          description: |
+            Used to send a valid OAuth 2 access token
+          type: string
+      queryParameters:
+        access_token:
+          description: |
+            Used to send a valid OAuth 2 access token
+securedBy:
+  - oauth_2_0:
+/register:
+  post:
+    description: Create a new user
+    body:
+      application/json:
+        example:
+          {
+            "login": "login12345",
+            "password": "password12345"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "id": 1,
+                "login": "login12345",
+                "password": "$2a$10$6/wJ.fS/VzEyQL8G1z61euwh/8Jm9OVymtBIoyEv5pxY/RX9bvMeG",
+                "items": null,
+                "enabled": true,
+                "username": "login12345",
+                "authorities": null,
+                "accountNonLocked": true,
+                "credentialsNonExpired": true,
+                "accountNonExpired": true
+              }
+
+/login:
+  post:
+    description: Login existing user
+    body:
+      application/json:
+        example:
+          {
+            "login": "login12345",
+            "password": "password12345"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwLGxvZ2luMTIzNDUiLCJpc3MiOiJVc2VycyBNaWNyb3NlcnZp
+              Y2UiLCJpYXQiOjE2NjE0MTQ0OTksImV4cCI6MTY2MTQxNTY5OX0.qS93iYTivX8KRPRgAmPIxbIhpa6kYj
+              dIhU-Y4gSWs-VLTgIAy76jH4t8dcsgRkbrsSXR_-LNJQgAdwgzTbv02Q"
+
+/items:
+  get:
+    description: Retrieve a list of logged user
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+                {
+                  "id": 1,
+                  "owner": 1,
+                  "name": "one"
+                }
+  post:
+    description: Add new item to logged user
+    body:
+      application/json:
+        example:
+          {
+            "name": "one"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+                {
+                  "id": 1,
+                  "owner": 1,
+                  "name": "one"
+                }
+
