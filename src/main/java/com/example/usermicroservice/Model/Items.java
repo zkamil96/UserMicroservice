@@ -5,8 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -15,7 +16,10 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class Items {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long owner;
+    @NotNull
+    @Size(min = 1, max = 64)
     private String name;
 }
