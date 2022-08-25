@@ -10,17 +10,22 @@ Technologies used in app
 <li>Mysql</li>
 <li>JWT</li>
 <li>Spring Boot</li>
-<li>Lombok/li>
+<li>Lombok</li>
 </ol>
 
 How to run
-1.Run MySQL server and create database with:
-  name: usermicroservice
-  port: 3306
-  username: root
-  password: root
-2.Run UserMicroserviceApplication in IntelliJ
-3.To test endpoints import spec.raml file to Postman.
-4.To test authorised endpoints copy token from response body from /login endpoint and paste to access token in authorization section.
+<ol>
+<li>
+Run MySQL server and create database with:
+<ol>
+  <li>name: usermicroservice<li>
+  <li>port: 3306<li>
+  <li>username: root<li>
+  <li>password: root<li>
+ </ol>
+</li>
+<li>Run UserMicroserviceApplication in IntelliJ</li>
+<li>To test endpoints import spec.raml file to Postman</li>
+<li>To test authorised endpoints copy token from response body from /login endpoint and paste to access token in authorization section</li>
 
 
